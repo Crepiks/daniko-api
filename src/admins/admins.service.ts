@@ -25,6 +25,6 @@ export class AdminsService {
   }
 
   remove(id: number) {
-    return `This action removes a #${id} admin`;
+    return this.adminsRepository.deleteById(id);
   }
 }

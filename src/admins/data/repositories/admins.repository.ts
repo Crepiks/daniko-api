@@ -26,7 +26,10 @@ export class AdminsRepository {
     return admin;
   }
 
-  async updateByIdAndFetch(id: number, payload: UpdateAdminDto): Promise<Admin> {
+  async updateByIdAndFetch(
+    id: number,
+    payload: UpdateAdminDto,
+  ): Promise<Admin> {
     const admin = await AdminModel.query().patchAndFetchById(id, payload);
 
     if (!admin) {
@@ -34,5 +37,13 @@ export class AdminsRepository {
     }
 
     return admin;
+  }
+
+  async deleteById(id: number) {
+    const rowsDeleted = await AdminModel.query().deleteById(id);
+
+    if (!rowsDeleted) {
+      throw new NotFoundException('Admin not found');
+    }
   }
 }
