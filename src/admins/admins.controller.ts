@@ -16,13 +16,17 @@ export class AdminsController {
   constructor(private readonly adminsService: AdminsService) {}
 
   @Get()
-  findAll() {
-    return this.adminsService.findAll();
+  async findAll() {
+    return {
+      admins: this.adminsService.findAll(),
+    };
   }
 
   @Post()
-  create(@Body() createAdminDto: CreateAdminDto) {
-    return this.adminsService.create(createAdminDto);
+  async create(@Body() payload: CreateAdminDto) {
+    return {
+      admin: await this.adminsService.create(payload),
+    };
   }
 
   @Get(':id')

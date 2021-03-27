@@ -1,16 +1,13 @@
-const dotenv = require('dotenv');
-const initConfig = require('./src/config');
-
+import dotenv from 'dotenv';
 dotenv.config();
-const config = initConfig();
 
 module.exports = {
-  client: config.db.connection,
+  client: process.env.DB_CONNECTION,
   connection: {
-    host: config.db.host,
-    user: config.db.username,
-    port: config.db.port as number,
-    password: config.db.password,
-    database: config.db.name,
+    host: process.env.DB_HOST || '127.0.0.1',
+    user: process.env.DB_USERNAME || 'root',
+    port: parseInt(process.env.DB_PORT) || 3306,
+    password: process.env.DB_PASSWORD || 'root',
+    database: process.env.DB_NAME || 'root',
   },
 };

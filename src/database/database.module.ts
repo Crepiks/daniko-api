@@ -28,7 +28,7 @@ export class DatabaseModule {
       port: this.configService.get<number>('DB_PORT') || 3306,
       name: this.configService.get<string>('DB_NAME') || 'daniko',
       username: this.configService.get<string>('DB_USERNAME') || 'root',
-      password: this.configService.get<string>('DB_PASSWORD'),
+      password: this.configService.get<string>('DB_PASSWORD') || 'root',
     };
   }
 
