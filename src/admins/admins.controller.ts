@@ -30,8 +30,10 @@ export class AdminsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.adminsService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return {
+      admin: await this.adminsService.findOne(+id),
+    };
   }
 
   @Patch(':id')
