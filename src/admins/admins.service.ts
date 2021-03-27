@@ -20,8 +20,8 @@ export class AdminsService {
     return this.adminsRepository.findById(id);
   }
 
-  update(id: number, updateAdminDto: UpdateAdminDto) {
-    return `This action updates a #${id} admin`;
+  update(id: number, payload: UpdateAdminDto) {
+    return this.adminsRepository.updateByIdAndFetch(id, payload);
   }
 
   remove(id: number) {
