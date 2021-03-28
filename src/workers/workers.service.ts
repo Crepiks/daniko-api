@@ -36,7 +36,11 @@ export class WorkersService {
     return worker;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} worker`;
+  async remove(id: number) {
+    const rowsDeleted = await this.workersRepository.deleteById(id);
+
+    if (!rowsDeleted) {
+      throw new NotFoundException('Worker not found');
+    }
   }
 }

@@ -20,7 +20,14 @@ export class WorkersRepository {
     return WorkerModel.query().findById(id);
   }
 
-  async updateAndFetchById(id: number, payload: UpdateWorkerDto): Promise<Worker> {
+  async updateAndFetchById(
+    id: number,
+    payload: UpdateWorkerDto,
+  ): Promise<Worker> {
     return WorkerModel.query().patchAndFetchById(id, payload);
+  }
+
+  async deleteById(id: number): Promise<number> {
+    return WorkerModel.query().deleteById(id);
   }
 }
