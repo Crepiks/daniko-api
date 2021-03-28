@@ -30,8 +30,10 @@ export class WorkersController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.workersService.findOne(+id);
+  async indOne(@Param('id') id: string) {
+    return {
+      worker: await this.workersService.findOne(+id),
+    };
   }
 
   @Patch(':id')

@@ -14,4 +14,8 @@ export class WorkersRepository {
     const worker = await WorkerModel.query().insertAndFetch(payload);
     return worker;
   }
+
+  async findById(id: number): Promise<Worker> {
+    return WorkerModel.query().findById(id);
+  }
 }

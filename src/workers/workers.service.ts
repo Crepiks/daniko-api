@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { WorkersRepository } from './data/repositories/workers.repository';
 import { CreateWorkerDto } from './dto/create-worker.dto';
 import { UpdateWorkerDto } from './dto/update-worker.dto';
@@ -16,8 +16,14 @@ export class WorkersService {
     return this.workersRepository.insertAndFetch(payload);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} worker`;
+  async findOne(id: number) {
+    const worker = await this.workersRepository.findById(id);
+
+    if (!worker) {
+      throw new NotFoundException('Worker not found');
+    }
+
+    return worker;
   }
 
   update(id: number, updateWorkerDto: UpdateWorkerDto) {
