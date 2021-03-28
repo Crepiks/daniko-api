@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreateWorkerDto } from 'src/workers/dto/create-worker.dto';
+import { UpdateWorkerDto } from 'src/workers/dto/update-worker.dto';
 import { Worker } from 'src/workers/entities/worker.entity';
 import { WorkerModel } from '../models/worker.model';
 
@@ -17,5 +18,9 @@ export class WorkersRepository {
 
   async findById(id: number): Promise<Worker> {
     return WorkerModel.query().findById(id);
+  }
+
+  async updateAndFetchById(id: number, payload: UpdateWorkerDto): Promise<Worker> {
+    return WorkerModel.query().patchAndFetchById(id, payload);
   }
 }

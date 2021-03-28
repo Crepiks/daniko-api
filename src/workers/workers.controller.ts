@@ -37,8 +37,13 @@ export class WorkersController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateWorkerDto: UpdateWorkerDto) {
-    return this.workersService.update(+id, updateWorkerDto);
+  async update(
+    @Param('id') id: string,
+    @Body() updateWorkerDto: UpdateWorkerDto,
+  ) {
+    return {
+      worker: await this.workersService.update(+id, updateWorkerDto),
+    };
   }
 
   @Delete(':id')

@@ -26,8 +26,14 @@ export class WorkersService {
     return worker;
   }
 
-  update(id: number, updateWorkerDto: UpdateWorkerDto) {
-    return `This action updates a #${id} worker`;
+  async update(id: number, payload: UpdateWorkerDto) {
+    const worker = await this.workersRepository.updateAndFetchById(id, payload);
+
+    if (!worker) {
+      throw new NotFoundException('Worker not found');
+    }
+
+    return worker;
   }
 
   remove(id: number) {
