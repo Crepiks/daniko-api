@@ -12,8 +12,8 @@ export class WorkersService {
     return this.workersRepository.findAll();
   }
 
-  create(createWorkerDto: CreateWorkerDto) {
-    return 'This action adds a new worker';
+  create(payload: CreateWorkerDto) {
+    return this.workersRepository.insertAndFetch(payload);
   }
 
   findOne(id: number) {

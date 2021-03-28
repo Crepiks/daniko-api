@@ -23,8 +23,10 @@ export class WorkersController {
   }
 
   @Post()
-  create(@Body() createWorkerDto: CreateWorkerDto) {
-    return this.workersService.create(createWorkerDto);
+  async create(@Body() createWorkerDto: CreateWorkerDto) {
+    return {
+      worker: await this.workersService.create(createWorkerDto),
+    };
   }
 
   @Get(':id')
