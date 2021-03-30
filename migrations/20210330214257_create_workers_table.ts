@@ -9,6 +9,8 @@ export async function up(knex: Knex): Promise<void> {
     table.text('description');
     table.integer('imageId').unsigned().nullable();
     table.foreign('imageId').references('images.id').onDelete('SET NULL');
+    table.integer('scheduleId').unsigned().nullable();
+    table.foreign('scheduleId').references('schedules.id').onDelete('SET NULL');
     table.timestamp('createdAt').defaultTo(knex.fn.now());
   });
 }
