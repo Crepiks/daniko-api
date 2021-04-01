@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { Service } from './entities/service.entity';
 import { ServicesRepository } from './data/repositories/services.repository';
 import { CreateServiceDto } from './dto/create-service.dto';
 import { UpdateServiceDto } from './dto/update-service.dto';
@@ -7,12 +8,12 @@ import { UpdateServiceDto } from './dto/update-service.dto';
 export class ServicesService {
   constructor(private readonly servicesRepository: ServicesRepository) {}
 
-  findAll() {
+  findAll(): Promise<Service[]> {
     return this.servicesRepository.findAll();
   }
 
-  create(createServiceDto: CreateServiceDto) {
-    return 'This action adds a new service';
+  create(payload: CreateServiceDto): Promise<Service> {
+    return this.servicesRepository.insertAndFetch(payload);
   }
 
   findOne(id: number) {

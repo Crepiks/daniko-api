@@ -23,8 +23,10 @@ export class ServicesController {
   }
 
   @Post()
-  create(@Body() createServiceDto: CreateServiceDto) {
-    return this.servicesService.create(createServiceDto);
+  async create(@Body() createServiceDto: CreateServiceDto) {
+    return {
+      service: await this.servicesService.create(createServiceDto),
+    };
   }
 
   @Get(':id')
