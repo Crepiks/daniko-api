@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Service } from './entities/service.entity';
 import { ServicesRepository } from './data/repositories/services.repository';
 import { CreateServiceDto } from './dto/create-service.dto';
@@ -16,8 +16,14 @@ export class ServicesService {
     return this.servicesRepository.insertAndFetch(payload);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} service`;
+  async findOne(id: number): Promise<Service> {
+    const service = await this.servicesRepository.detailById(id);
+
+    if (!service) {
+      throw new NotFoundException('Service not found');
+    }
+
+    return service;
   }
 
   update(id: number, updateServiceDto: UpdateServiceDto) {

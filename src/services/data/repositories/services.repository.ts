@@ -12,4 +12,8 @@ export class ServicesRepository {
   async insertAndFetch(payload: CreateServiceDto): Promise<Service> {
     return ServicesModel.query().insertAndFetch(payload);
   }
+
+  async detailById(id: number): Promise<Service> {
+    return ServicesModel.query().findById(id);
+  }
 }

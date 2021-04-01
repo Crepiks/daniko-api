@@ -30,8 +30,10 @@ export class ServicesController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.servicesService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return {
+      service: await this.servicesService.findOne(+id),
+    };
   }
 
   @Patch(':id')
