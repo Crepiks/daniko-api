@@ -26,8 +26,17 @@ export class ServicesService {
     return service;
   }
 
-  update(id: number, updateServiceDto: UpdateServiceDto) {
-    return `This action updates a #${id} service`;
+  async update(id: number, payload: UpdateServiceDto) {
+    const service = await this.servicesRepository.updateAndFetchById(
+      id,
+      payload,
+    );
+
+    if (!service) {
+      throw new NotFoundException('Service not found');
+    }
+
+    return service;
   }
 
   remove(id: number) {
