@@ -39,7 +39,11 @@ export class ServicesService {
     return service;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} service`;
+  async remove(id: number) {
+    const rowsDeleted = await this.servicesRepository.deleteById(id);
+
+    if (!rowsDeleted) {
+      throw new NotFoundException('Service not found');
+    }
   }
 }

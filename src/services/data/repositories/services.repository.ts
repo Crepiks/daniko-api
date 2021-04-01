@@ -6,22 +6,23 @@ import { ServicesModel } from '../models/services.model';
 
 @Injectable()
 export class ServicesRepository {
-  async findAll(): Promise<Service[]> {
+  findAll(): Promise<Service[]> {
     return ServicesModel.query().orderBy('createdAt', 'desc');
   }
 
-  async insertAndFetch(payload: CreateServiceDto): Promise<Service> {
+  insertAndFetch(payload: CreateServiceDto): Promise<Service> {
     return ServicesModel.query().insertAndFetch(payload);
   }
 
-  async detailById(id: number): Promise<Service> {
+  detailById(id: number): Promise<Service> {
     return ServicesModel.query().findById(id);
   }
 
-  async updateAndFetchById(
-    id: number,
-    payload: UpdateServiceDto,
-  ): Promise<Service> {
+  updateAndFetchById(id: number, payload: UpdateServiceDto): Promise<Service> {
     return ServicesModel.query().patchAndFetchById(id, payload);
+  }
+
+  deleteById(id: number): Promise<number> {
+    return ServicesModel.query().deleteById(id);
   }
 }
