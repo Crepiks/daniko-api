@@ -1,6 +1,6 @@
 import { Model } from 'objection';
 
-export class AdminModel extends Model {
+class AdminModel extends Model {
   static tableName = 'admins';
 
   id!: number;
@@ -11,3 +11,6 @@ export class AdminModel extends Model {
   password!: string;
   createdAt!: string;
 }
+
+module.exports = AdminModel;
+export default AdminModel;

@@ -1,6 +1,6 @@
 import { Model } from 'objection';
 
-export class ServicesModel extends Model {
+class ServiceModel extends Model {
   static tableName = 'services';
 
   id: number;
@@ -9,3 +9,6 @@ export class ServicesModel extends Model {
   scheduleId: number;
   createdAt: string;
 }
+
+module.exports = ServiceModel;
+export default ServiceModel;

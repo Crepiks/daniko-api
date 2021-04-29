@@ -1,6 +1,6 @@
 import { Model } from 'objection';
 
-export class WorkerModel extends Model {
+class WorkerModel extends Model {
   static tableName = 'workers';
 
   id: number;
@@ -11,3 +11,6 @@ export class WorkerModel extends Model {
   imageId: number;
   createdAt: string;
 }
+
+module.exports = WorkerModel;
+export default WorkerModel;
