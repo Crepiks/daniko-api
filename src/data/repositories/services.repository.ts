@@ -7,9 +7,10 @@ import ServiceModel from '../models/service.model';
 @Injectable()
 export class ServicesRepository {
   findAll(): Promise<Service[]> {
-    return ServiceModel.query()
-      .orderBy('createdAt', 'desc')
-      .withGraphFetched('schedule');
+    return ServiceModel.query().orderBy('createdAt', 'desc').withGraphFetched({
+      images: true,
+      schedule: true,
+    });
   }
 
   insertAndFetch(payload: CreateServiceDto): Promise<Service> {
@@ -17,7 +18,10 @@ export class ServicesRepository {
   }
 
   detailById(id: number): Promise<Service> {
-    return ServiceModel.query().findById(id).withGraphFetched('schedule');
+    return ServiceModel.query().findById(id).withGraphFetched({
+      images: true,
+      schedule: true,
+    });
   }
 
   updateAndFetchById(id: number, payload: UpdateServiceDto): Promise<Service> {

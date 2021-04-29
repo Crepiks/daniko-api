@@ -1,3 +1,4 @@
+import { Image } from './image.entity';
 import { Schedule } from './schedule.entity';
 
 export class Service {
@@ -7,4 +8,5 @@ export class Service {
   scheduleId: number;
   createdAt: string;
   schedule: Schedule;
+  images: Image[];
 }

@@ -7,9 +7,10 @@ import WorkerModel from '../models/worker.model';
 @Injectable()
 export class WorkersRepository {
   findAll(): Promise<Worker[]> {
-    return WorkerModel.query()
-      .orderBy('createdAt', 'desc')
-      .withGraphFetched('schedule');
+    return WorkerModel.query().orderBy('createdAt', 'desc').withGraphFetched({
+      image: true,
+      schedule: true,
+    });
   }
 
   insertAndFetch(payload: CreateWorkerDto): Promise<Worker> {
@@ -17,7 +18,10 @@ export class WorkersRepository {
   }
 
   findById(id: number): Promise<Worker> {
-    return WorkerModel.query().findById(id).withGraphFetched('schedule');
+    return WorkerModel.query().findById(id).withGraphFetched({
+      image: true,
+      schedule: true,
+    });
   }
 
   updateAndFetchById(id: number, payload: UpdateWorkerDto): Promise<Worker> {
