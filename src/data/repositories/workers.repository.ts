@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateWorkerDto } from 'src/workers/dto/create-worker.dto';
 import { UpdateWorkerDto } from 'src/workers/dto/update-worker.dto';
-import { Worker } from 'src/workers/entities/worker.entity';
+import { Worker } from 'src/entities/worker.entity';
 import WorkerModel from '../models/worker.model';
 
 @Injectable()

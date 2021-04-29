@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateServiceDto } from 'src/services/dto/create-service.dto';
 import { UpdateServiceDto } from 'src/services/dto/update-service.dto';
-import { Service } from 'src/services/entities/service.entity';
+import { Service } from 'src/entities/service.entity';
 import ServiceModel from '../models/service.model';
 
 @Injectable()

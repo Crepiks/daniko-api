@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateAdminDto } from 'src/admins/dto/create-admin.dto';
 import { UpdateAdminDto } from 'src/admins/dto/update-admin.dto';
-import { Admin } from 'src/admins/entities/admin.entity';
+import { Admin } from 'src/entities/admin.entity';
 import AdminModel from '../models/admin.model';
 
 @Injectable()

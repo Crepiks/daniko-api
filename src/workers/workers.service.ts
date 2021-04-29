@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { WorkersRepository } from '../data/repositories/workers.repository';
 import { CreateWorkerDto } from './dto/create-worker.dto';
 import { UpdateWorkerDto } from './dto/update-worker.dto';
-import { Worker } from './entities/worker.entity';
+import { Worker } from '../entities/worker.entity';
 
 @Injectable()
 export class WorkersService {
