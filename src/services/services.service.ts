@@ -26,7 +26,7 @@ export class ServicesService {
     return service;
   }
 
-  async update(id: number, payload: UpdateServiceDto) {
+  async update(id: number, payload: UpdateServiceDto): Promise<Service> {
     const service = await this.servicesRepository.updateAndFetchById(
       id,
       payload,
@@ -39,7 +39,7 @@ export class ServicesService {
     return service;
   }
 
-  async remove(id: number) {
+  async remove(id: number): Promise<void> {
     const rowsDeleted = await this.servicesRepository.deleteById(id);
 
     if (!rowsDeleted) {

@@ -6,28 +6,25 @@ import WorkerModel from '../models/worker.model';
 
 @Injectable()
 export class WorkersRepository {
-  async findAll(): Promise<Worker[]> {
-    const workers = await WorkerModel.query().orderBy('createdAt', 'desc');
-    return workers;
+  findAll(): Promise<Worker[]> {
+    return WorkerModel.query()
+      .orderBy('createdAt', 'desc')
+      .withGraphFetched('schedule');
   }
 
-  async insertAndFetch(payload: CreateWorkerDto): Promise<Worker> {
-    const worker = await WorkerModel.query().insertAndFetch(payload);
-    return worker;
+  insertAndFetch(payload: CreateWorkerDto): Promise<Worker> {
+    return WorkerModel.query().insertAndFetch(payload);
   }
 
-  async findById(id: number): Promise<Worker> {
-    return WorkerModel.query().findById(id);
+  findById(id: number): Promise<Worker> {
+    return WorkerModel.query().findById(id).withGraphFetched('schedule');
   }
 
-  async updateAndFetchById(
-    id: number,
-    payload: UpdateWorkerDto,
-  ): Promise<Worker> {
+  updateAndFetchById(id: number, payload: UpdateWorkerDto): Promise<Worker> {
     return WorkerModel.query().patchAndFetchById(id, payload);
   }
 
-  async deleteById(id: number): Promise<number> {
+  deleteById(id: number): Promise<number> {
     return WorkerModel.query().deleteById(id);
   }
 }
