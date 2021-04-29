@@ -1,22 +1,26 @@
 import { Injectable } from '@nestjs/common';
+import { PhotosRepository } from 'src/data/repositories/photo.repository';
+import { Photo } from 'src/entities/photo.entity';
 import { CreatePhotoDto } from './dto/create-photo.dto';
 import { UpdatePhotoDto } from './dto/update-photo.dto';
 
 @Injectable()
 export class PhotosService {
-  create(createPhotoDto: CreatePhotoDto) {
-    return 'This action adds a new photo';
+  constructor(private readonly photosRepository: PhotosRepository) {}
+
+  findAll(): Promise<Photo[]> {
+    return this.photosRepository.findAll();
   }
 
-  findAll() {
-    return `This action returns all photos`;
+  create(payload: CreatePhotoDto) {
+    return 'This action adds a new photo';
   }
 
   findOne(id: number) {
     return `This action returns a #${id} photo`;
   }
 
-  update(id: number, updatePhotoDto: UpdatePhotoDto) {
+  update(id: number, payload: UpdatePhotoDto) {
     return `This action updates a #${id} photo`;
   }
 

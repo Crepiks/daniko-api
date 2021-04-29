@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { PhotosService } from './photos.service';
 import { CreatePhotoDto } from './dto/create-photo.dto';
 import { UpdatePhotoDto } from './dto/update-photo.dto';
@@ -7,14 +15,16 @@ import { UpdatePhotoDto } from './dto/update-photo.dto';
 export class PhotosController {
   constructor(private readonly photosService: PhotosService) {}
 
+  @Get()
+  async findAll() {
+    return {
+      photos: await this.photosService.findAll(),
+    };
+  }
+
   @Post()
   create(@Body() createPhotoDto: CreatePhotoDto) {
     return this.photosService.create(createPhotoDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.photosService.findAll();
   }
 
   @Get(':id')
