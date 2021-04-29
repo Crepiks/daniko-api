@@ -3,6 +3,7 @@ import { Model } from 'objection';
 class ScheduleModel extends Model {
   static tableName = 'schedules';
 
+  id: number;
   monday: string;
   tuesday: string;
   wednesday: string;
