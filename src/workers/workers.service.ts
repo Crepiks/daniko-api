@@ -12,11 +12,11 @@ export class WorkersService {
     return this.workersRepository.findAll();
   }
 
-  create(payload: CreateWorkerDto) {
+  create(payload: CreateWorkerDto): Promise<Worker> {
     return this.workersRepository.insertAndFetch(payload);
   }
 
-  async findOne(id: number) {
+  async findOne(id: number): Promise<Worker> {
     const worker = await this.workersRepository.findById(id);
 
     if (!worker) {
@@ -26,7 +26,7 @@ export class WorkersService {
     return worker;
   }
 
-  async update(id: number, payload: UpdateWorkerDto) {
+  async update(id: number, payload: UpdateWorkerDto): Promise<Worker> {
     const worker = await this.workersRepository.updateAndFetchById(id, payload);
 
     if (!worker) {
@@ -36,7 +36,7 @@ export class WorkersService {
     return worker;
   }
 
-  async remove(id: number) {
+  async remove(id: number): Promise<void> {
     const rowsDeleted = await this.workersRepository.deleteById(id);
 
     if (!rowsDeleted) {

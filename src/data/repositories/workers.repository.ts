@@ -14,7 +14,7 @@ export class WorkersRepository {
   }
 
   insertAndFetch(payload: CreateWorkerDto): Promise<Worker> {
-    return WorkerModel.query().insertAndFetch(payload);
+    return WorkerModel.query().insertGraph(payload);
   }
 
   findById(id: number): Promise<Worker> {
@@ -25,7 +25,10 @@ export class WorkersRepository {
   }
 
   updateAndFetchById(id: number, payload: UpdateWorkerDto): Promise<Worker> {
-    return WorkerModel.query().patchAndFetchById(id, payload);
+    return WorkerModel.query().upsertGraph({
+      id,
+      ...payload,
+    });
   }
 
   deleteById(id: number): Promise<number> {
