@@ -14,5 +14,4 @@ export class UpdateWorkerDto {
   branch: string;
   description: string;
   schedule: UpdateScheduleDto;
-  servicesIds: number[];
 }

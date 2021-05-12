@@ -32,11 +32,19 @@ export class WorkersService {
   }
 
   async update(id: number, payload: UpdateWorkerDto): Promise<Worker> {
-    const worker = await this.workersRepository.updateAndFetchById(id, payload);
+    const { servicesIds, ...workerPayload } = payload;
+    let worker = await this.workersRepository.updateAndFetchById(
+      id,
+      workerPayload,
+    );
 
     if (!worker) {
       throw new NotFoundException('Worker not found');
     }
+
+    await this.workersRepository.unrelateAllServicesFromWorker(worker.id);
+    await this.workersRepository.relateServicesToWorker(worker.id, servicesIds);
+    worker = await this.workersRepository.findById(worker.id);
 
     return worker;
   }
