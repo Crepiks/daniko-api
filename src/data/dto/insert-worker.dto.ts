@@ -8,11 +8,10 @@ class CreateScheduleDto {
   sunday: string;
 }
 
-export class CreateWorkerDto {
+export class InsertWorkerDto {
   firstName: string;
   lastName: string;
   branch: string;
   description: string;
   schedule: CreateScheduleDto;
-  servicesIds: number[];
 }

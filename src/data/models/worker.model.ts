@@ -1,6 +1,7 @@
 import { Model } from 'objection';
 import ImageModel from './image.model';
 import ScheduleModel from './schedule.model';
+import ServiceModel from './service.model';
 
 class WorkerModel extends Model {
   static tableName = 'workers';
@@ -15,10 +16,12 @@ class WorkerModel extends Model {
   createdAt: string;
   image: ImageModel;
   schedule: ScheduleModel;
+  services: ServiceModel[];
 
   static get relationMappings() {
     const ImageModel = require('./image.model');
     const ScheduleModel = require('./schedule.model');
+    const ServiceModel = require('./service.model');
 
     return {
       image: {
@@ -35,6 +38,18 @@ class WorkerModel extends Model {
         join: {
           from: 'workers.scheduleId',
           to: 'schedules.id',
+        },
+      },
+      services: {
+        relation: Model.ManyToManyRelation,
+        modelClass: ServiceModel,
+        join: {
+          from: 'workers.id',
+          through: {
+            from: 'services_workers.workerId',
+            to: 'services_workers.serviceId',
+          },
+          to: 'services.id',
         },
       },
     };

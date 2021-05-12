@@ -12,8 +12,13 @@ export class WorkersService {
     return this.workersRepository.findAll();
   }
 
-  create(payload: CreateWorkerDto): Promise<Worker> {
-    return this.workersRepository.insertAndFetch(payload);
+  async create(payload: CreateWorkerDto): Promise<Worker> {
+    const { servicesIds, ...workerPayload } = payload;
+    let worker = await this.workersRepository.insertAndFetch(workerPayload);
+    await this.workersRepository.relateServicesToWorker(worker.id, servicesIds);
+    worker = await this.workersRepository.findById(worker.id);
+
+    return worker;
   }
 
   async findOne(id: number): Promise<Worker> {
