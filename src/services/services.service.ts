@@ -35,14 +35,25 @@ export class ServicesService {
   }
 
   async update(id: number, payload: UpdateServiceDto): Promise<Service> {
-    const service = await this.servicesRepository.updateAndFetchById(
+    const { workersIds, ...servicePayload } = payload;
+    let service = await this.servicesRepository.updateAndFetchById(
       id,
-      payload,
+      servicePayload,
     );
 
     if (!service) {
       throw new NotFoundException('Service not found');
     }
+
+    if (workersIds) {
+      await this.servicesRepository.unrelateAllWorkersFromService(service.id);
+      await this.servicesRepository.relateWorkersToService(
+        service.id,
+        workersIds,
+      );
+    }
+
+    service = await this.servicesRepository.detailById(service.id);
 
     return service;
   }

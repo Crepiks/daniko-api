@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InsertServiceDto } from '../dto/insert-service.dto';
-import { UpdateServiceDto } from 'src/services/dto/update-service.dto';
+import { UpdateServiceDto } from '../dto/update-service.dto';
 import { Service } from 'src/entities/service.entity';
 import ServiceModel from '../models/service.model';
 
@@ -31,6 +31,10 @@ export class ServicesRepository {
 
   relateWorkerToService(serviceId: number, workerId: number): Promise<number> {
     return ServiceModel.relatedQuery('workers').for(serviceId).relate(workerId);
+  }
+
+  unrelateAllWorkersFromService(serviceId: number) {
+    return ServiceModel.relatedQuery('workers').for(serviceId).unrelate();
   }
 
   detailById(id: number): Promise<Service> {

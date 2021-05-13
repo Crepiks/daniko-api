@@ -12,5 +12,4 @@ export class UpdateServiceDto {
   title: string;
   description: string;
   schedule: UpdateScheduleDto;
-  workersIds: number[];
 }
