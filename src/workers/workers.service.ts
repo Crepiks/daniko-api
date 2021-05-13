@@ -42,8 +42,14 @@ export class WorkersService {
       throw new NotFoundException('Worker not found');
     }
 
-    await this.workersRepository.unrelateAllServicesFromWorker(worker.id);
-    await this.workersRepository.relateServicesToWorker(worker.id, servicesIds);
+    if (servicesIds) {
+      await this.workersRepository.unrelateAllServicesFromWorker(worker.id);
+      await this.workersRepository.relateServicesToWorker(
+        worker.id,
+        servicesIds,
+      );
+    }
+
     worker = await this.workersRepository.findById(worker.id);
 
     return worker;
