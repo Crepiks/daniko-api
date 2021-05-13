@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateServiceDto } from 'src/services/dto/create-service.dto';
+import { InsertServiceDto } from '../dto/insert-service.dto';
 import { UpdateServiceDto } from 'src/services/dto/update-service.dto';
 import { Service } from 'src/entities/service.entity';
 import ServiceModel from '../models/service.model';
@@ -13,19 +13,39 @@ export class ServicesRepository {
     });
   }
 
-  insertAndFetch(payload: CreateServiceDto): Promise<Service> {
-    return ServiceModel.query().insertAndFetch(payload);
+  insertAndFetch(payload: InsertServiceDto): Promise<Service> {
+    return ServiceModel.query().insertGraph(payload);
+  }
+
+  async relateWorkersToService(
+    serviceId: number,
+    workersIds: number[],
+  ): Promise<void> {
+    const service = await ServiceModel.query().findById(serviceId);
+    if (!service) return;
+    const queries = workersIds.map((id) =>
+      this.relateWorkerToService(service.id, id),
+    );
+    await Promise.all(queries);
+  }
+
+  relateWorkerToService(serviceId: number, workerId: number): Promise<number> {
+    return ServiceModel.relatedQuery('workers').for(serviceId).relate(workerId);
   }
 
   detailById(id: number): Promise<Service> {
     return ServiceModel.query().findById(id).withGraphFetched({
       images: true,
       schedule: true,
+      workers: true,
     });
   }
 
   updateAndFetchById(id: number, payload: UpdateServiceDto): Promise<Service> {
-    return ServiceModel.query().patchAndFetchById(id, payload);
+    return ServiceModel.query().upsertGraph({
+      id,
+      ...payload,
+    });
   }
 
   deleteById(id: number): Promise<number> {

@@ -1,4 +1,4 @@
-class UpdateScheduleDto {
+class InsertScheduleDto {
   monday: string;
   tuesday: string;
   wednesday: string;
@@ -8,8 +8,8 @@ class UpdateScheduleDto {
   sunday: string;
 }
 
-export class UpdateServiceDto {
+export class InsertServiceDto {
   title: string;
   description: string;
-  schedule: UpdateScheduleDto;
+  schedule: InsertScheduleDto;
 }

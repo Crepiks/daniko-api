@@ -12,8 +12,16 @@ export class ServicesService {
     return this.servicesRepository.findAll();
   }
 
-  create(payload: CreateServiceDto): Promise<Service> {
-    return this.servicesRepository.insertAndFetch(payload);
+  async create(payload: CreateServiceDto): Promise<Service> {
+    const { workersIds, ...servicePayload } = payload;
+    let service = await this.servicesRepository.insertAndFetch(servicePayload);
+    await this.servicesRepository.relateWorkersToService(
+      service.id,
+      workersIds,
+    );
+    service = await this.servicesRepository.detailById(service.id);
+
+    return service;
   }
 
   async findOne(id: number): Promise<Service> {
