@@ -10,7 +10,9 @@ import {
 import { WorkersService } from './workers.service';
 import { CreateWorkerDto } from './dto/create-worker.dto';
 import { UpdateWorkerDto } from './dto/update-worker.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('workers')
 @Controller('workers')
 export class WorkersController {
   constructor(private readonly workersService: WorkersService) {}

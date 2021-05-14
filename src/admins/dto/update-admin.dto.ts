@@ -1,4 +1,9 @@
+import { ApiProperty } from '@nestjs/swagger';
+
 export class UpdateAdminDto {
-  firstName!: string;
-  lastName!: string;
+  @ApiProperty()
+  firstName: string;
+
+  @ApiProperty()
+  lastName: string;
 }
