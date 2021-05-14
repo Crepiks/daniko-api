@@ -7,7 +7,14 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import {
+  ApiCreatedResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiParam,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { AdminsService } from './admins.service';
 import { CreateAdminDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
@@ -17,6 +24,7 @@ import { UpdateAdminDto } from './dto/update-admin.dto';
 export class AdminsController {
   constructor(private readonly adminsService: AdminsService) {}
 
+  @ApiOkResponse({ description: 'List of admins has been retrieved.' })
   @Get()
   async findAll() {
     return {
@@ -24,6 +32,7 @@ export class AdminsController {
     };
   }
 
+  @ApiCreatedResponse({ description: 'Admin has been created.' })
   @Post()
   async create(@Body() payload: CreateAdminDto) {
     return {
@@ -31,6 +40,9 @@ export class AdminsController {
     };
   }
 
+  @ApiOkResponse({ description: 'Admin has been retrieved.' })
+  @ApiNotFoundResponse({ description: 'Admin not found.' })
+  @ApiParam({ name: 'id', description: 'Admin identifier', type: Number })
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return {
@@ -38,6 +50,9 @@ export class AdminsController {
     };
   }
 
+  @ApiOkResponse({ description: 'Admin has been updated.' })
+  @ApiNotFoundResponse({ description: 'Admin not found.' })
+  @ApiParam({ name: 'id', description: 'Admin identifier', type: Number })
   @Patch(':id')
   async update(
     @Param('id') id: string,
@@ -48,6 +63,9 @@ export class AdminsController {
     };
   }
 
+  @ApiOkResponse({ description: 'Admin has been deleted.' })
+  @ApiNotFoundResponse({ description: 'Admin not found.' })
+  @ApiParam({ name: 'id', description: 'Admin identifier', type: Number })
   @Delete(':id')
   async remove(@Param('id') id: string) {
     await this.adminsService.remove(+id);
