@@ -6,10 +6,9 @@ import {
   Patch,
   Param,
   Delete,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
-import { WorkersService } from './workers.service';
-import { CreateWorkerDto } from './dto/create-worker.dto';
-import { UpdateWorkerDto } from './dto/update-worker.dto';
 import {
   ApiCreatedResponse,
   ApiNotFoundResponse,
@@ -17,6 +16,13 @@ import {
   ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import path from 'path';
+import { v4 as uuidv4 } from 'uuid';
+import { WorkersService } from './workers.service';
+import { CreateWorkerDto } from './dto/create-worker.dto';
+import { UpdateWorkerDto } from './dto/update-worker.dto';
 
 @ApiTags('workers')
 @Controller('workers')
@@ -68,5 +74,28 @@ export class WorkersController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.workersService.remove(+id);
+  }
+
+  @Post(':id/image')
+  @UseInterceptors(
+    FileInterceptor('image', {
+      storage: diskStorage({
+        destination: './uploads',
+        filename: (req, file, cb) => {
+          const fileName = uuidv4();
+          const extenstion = path.parse(file.originalname).ext;
+
+          cb(null, `${fileName}${extenstion}`);
+        },
+      }),
+    }),
+  )
+  async uploadImage(
+    @Param('id') id: string,
+    @UploadedFile() image: Express.Multer.File,
+  ) {
+    return {
+      worker: await this.workersService.setImage(+id, image.filename),
+    };
   }
 }

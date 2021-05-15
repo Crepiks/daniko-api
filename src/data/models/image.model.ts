@@ -4,7 +4,7 @@ class ImageModel extends Model {
   static tableName = 'images';
 
   id: number;
-  url: string;
+  path: string;
   createdAt: string;
 }
 

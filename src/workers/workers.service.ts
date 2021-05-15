@@ -1,4 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import path from 'path';
+import fs from 'fs-extra';
 import { WorkersRepository } from '../data/repositories/workers.repository';
 import { CreateWorkerDto } from './dto/create-worker.dto';
 import { UpdateWorkerDto } from './dto/update-worker.dto';
@@ -15,14 +17,20 @@ export class WorkersService {
   async create(payload: CreateWorkerDto): Promise<Worker> {
     const { servicesIds, ...workerPayload } = payload;
     let worker = await this.workersRepository.insertAndFetch(workerPayload);
-    await this.workersRepository.relateServicesToWorker(worker.id, servicesIds);
-    worker = await this.workersRepository.findById(worker.id);
+    if (servicesIds) {
+      await this.workersRepository.relateServicesToWorker(
+        worker.id,
+        servicesIds,
+      );
+    }
+
+    worker = await this.workersRepository.detailById(worker.id);
 
     return worker;
   }
 
   async findOne(id: number): Promise<Worker> {
-    const worker = await this.workersRepository.findById(id);
+    const worker = await this.workersRepository.detailById(id);
 
     if (!worker) {
       throw new NotFoundException('Worker not found');
@@ -50,7 +58,7 @@ export class WorkersService {
       );
     }
 
-    worker = await this.workersRepository.findById(worker.id);
+    worker = await this.workersRepository.detailById(worker.id);
 
     return worker;
   }
@@ -61,5 +69,26 @@ export class WorkersService {
     if (!rowsDeleted) {
       throw new NotFoundException('Worker not found');
     }
+  }
+
+  async setImage(id: number, fileName: string): Promise<Worker> {
+    let worker = await this.workersRepository.detailById(id);
+
+    if (!worker) {
+      throw new NotFoundException('Worker not found');
+    }
+
+    if (worker.image) {
+      const imagePath = path.resolve('./uploads', worker.image.path);
+      await fs.remove(imagePath);
+
+      await this.workersRepository.updateImage(worker.id, fileName);
+    } else {
+      await this.workersRepository.insertImage(worker.id, fileName);
+    }
+
+    worker = await this.workersRepository.detailById(id);
+
+    return worker;
   }
 }

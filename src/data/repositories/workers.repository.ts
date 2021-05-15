@@ -38,6 +38,10 @@ export class WorkersRepository {
   }
 
   findById(id: number): Promise<Worker> {
+    return WorkerModel.query().findById(id);
+  }
+
+  detailById(id: number): Promise<Worker> {
     return WorkerModel.query().findById(id).withGraphFetched({
       image: true,
       schedule: true,
@@ -54,5 +58,19 @@ export class WorkersRepository {
 
   deleteById(id: number): Promise<number> {
     return WorkerModel.query().deleteById(id);
+  }
+
+  async insertImage(id: number, path: string): Promise<void> {
+    const worker = await WorkerModel.query().findById(id);
+    if (!worker) return;
+
+    await worker.$relatedQuery('image').insert({ path });
+  }
+
+  async updateImage(id: number, path: string): Promise<void> {
+    const worker = await WorkerModel.query().findById(id);
+    if (!worker) return;
+
+    await worker.$relatedQuery('image').patch({ path });
   }
 }

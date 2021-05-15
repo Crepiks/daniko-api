@@ -1,5 +1,5 @@
 export class Image {
   id: number;
-  url: string;
+  path: string;
   createdAt: string;
 }

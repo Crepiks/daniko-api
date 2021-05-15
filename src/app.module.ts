@@ -6,6 +6,7 @@ import { WorkersModule } from './workers/workers.module';
 import { ServicesModule } from './services/services.module';
 import { RepositoriesModule } from './data/repositories/repositories.module';
 import { PhotosModule } from './photos/photos.module';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   imports: [
