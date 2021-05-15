@@ -5,10 +5,14 @@ import { WorkersRepository } from '../data/repositories/workers.repository';
 import { CreateWorkerDto } from './dto/create-worker.dto';
 import { UpdateWorkerDto } from './dto/update-worker.dto';
 import { Worker } from '../entities/worker.entity';
+import { UploadsService } from 'src/uploads/uploads.service';
 
 @Injectable()
 export class WorkersService {
-  constructor(private readonly workersRepository: WorkersRepository) {}
+  constructor(
+    private readonly workersRepository: WorkersRepository,
+    private readonly uploadsService: UploadsService,
+  ) {}
 
   findAll(): Promise<Worker[]> {
     return this.workersRepository.findAll();
@@ -79,8 +83,7 @@ export class WorkersService {
     }
 
     if (worker.image) {
-      const imagePath = path.resolve('./uploads', worker.image.path);
-      await fs.remove(imagePath);
+      await this.uploadsService.deleteFile(worker.image.path);
 
       await this.workersRepository.updateImage(worker.id, fileName);
     } else {
