@@ -4,10 +4,14 @@ import { ServicesRepository } from '../data/repositories/services.repository';
 import { CreateServiceDto } from './dto/create-service.dto';
 import { UpdateServiceDto } from './dto/update-service.dto';
 import { Image } from 'src/entities/image.entity';
+import { UploadsService } from 'src/uploads/uploads.service';
 
 @Injectable()
 export class ServicesService {
-  constructor(private readonly servicesRepository: ServicesRepository) {}
+  constructor(
+    private readonly servicesRepository: ServicesRepository,
+    private readonly uploadsService: UploadsService,
+  ) {}
 
   findAll(): Promise<Service[]> {
     return this.servicesRepository.findAll();
@@ -81,5 +85,25 @@ export class ServicesService {
     });
 
     return image;
+  }
+
+  async deleteImage(serviceId: number, imageId: number): Promise<void> {
+    const service = await this.servicesRepository.findById(serviceId);
+    if (!service) {
+      throw new NotFoundException('Service not found');
+    }
+
+    const image = await this.servicesRepository.findImageById(
+      service.id,
+      imageId,
+    );
+
+    if (!image) {
+      throw new NotFoundException('Image not found');
+    }
+
+    await this.uploadsService.deleteFile(image.path);
+
+    await this.servicesRepository.deleteImageById(service.id, imageId);
   }
 }

@@ -69,6 +69,13 @@ export class ServicesRepository {
     return service.$relatedQuery('images').insertAndFetch(payload);
   }
 
+  async findImageById(serviceId: number, imageId: number): Promise<Image> {
+    const service = await ServiceModel.query().findById(serviceId);
+    if (!service) return;
+
+    return service.$relatedQuery('images').findById(imageId);
+  }
+
   async deleteImageById(serviceId: number, imageId: number): Promise<number> {
     const service = await ServiceModel.query().findById(serviceId);
     if (!service) return;

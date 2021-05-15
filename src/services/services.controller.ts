@@ -98,4 +98,9 @@ export class ServicesController {
       image: await this.servicesService.uploadImage(+id, image.filename),
     };
   }
+
+  @Delete(":id/images/:imageId")
+  deleteImage(@Param('id') serviceId: string, @Param("imageId") imageId: string) {
+    return this.servicesService.deleteImage(+serviceId, +imageId)
+  }
 }
