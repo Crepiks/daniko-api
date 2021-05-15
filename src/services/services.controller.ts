@@ -10,6 +10,8 @@ import {
   UploadedFile,
 } from '@nestjs/common';
 import {
+  ApiBody,
+  ApiConsumes,
   ApiCreatedResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -23,6 +25,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { ServicesService } from './services.service';
 import { CreateServiceDto } from './dto/create-service.dto';
 import { UpdateServiceDto } from './dto/update-service.dto';
+import { ImageUploadDto } from './dto/image-upload.dto';
 
 @ApiTags('services')
 @Controller('services')
@@ -76,6 +79,14 @@ export class ServicesController {
     return this.servicesService.remove(+id);
   }
 
+  @ApiCreatedResponse({ description: 'Image has been uploaded.' })
+  @ApiNotFoundResponse({ description: 'Service not found.' })
+  @ApiParam({ name: 'id', description: 'Service identifier', type: Number })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    description: 'Image of the service',
+    type: ImageUploadDto,
+  })
   @UseInterceptors(
     FileInterceptor('image', {
       storage: diskStorage({
@@ -99,8 +110,15 @@ export class ServicesController {
     };
   }
 
-  @Delete(":id/images/:imageId")
-  deleteImage(@Param('id') serviceId: string, @Param("imageId") imageId: string) {
-    return this.servicesService.deleteImage(+serviceId, +imageId)
+  @ApiOkResponse({ description: 'Image has been deleted.' })
+  @ApiNotFoundResponse({ description: 'Service or service not found.' })
+  @ApiParam({ name: 'id', description: 'Service identifier', type: Number })
+  @ApiParam({ name: 'imageId', description: 'Image identifier', type: Number })
+  @Delete(':id/images/:imageId')
+  deleteImage(
+    @Param('id') serviceId: string,
+    @Param('imageId') imageId: string,
+  ) {
+    return this.servicesService.deleteImage(+serviceId, +imageId);
   }
 }
