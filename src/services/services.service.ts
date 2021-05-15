@@ -1,8 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, Post } from '@nestjs/common';
 import { Service } from '../entities/service.entity';
 import { ServicesRepository } from '../data/repositories/services.repository';
 import { CreateServiceDto } from './dto/create-service.dto';
 import { UpdateServiceDto } from './dto/update-service.dto';
+import { Image } from 'src/entities/image.entity';
 
 @Injectable()
 export class ServicesService {
@@ -15,10 +16,12 @@ export class ServicesService {
   async create(payload: CreateServiceDto): Promise<Service> {
     const { workersIds, ...servicePayload } = payload;
     let service = await this.servicesRepository.insertAndFetch(servicePayload);
-    await this.servicesRepository.relateWorkersToService(
-      service.id,
-      workersIds,
-    );
+    if (workersIds) {
+      await this.servicesRepository.relateWorkersToService(
+        service.id,
+        workersIds,
+      );
+    }
     service = await this.servicesRepository.detailById(service.id);
 
     return service;
@@ -64,5 +67,19 @@ export class ServicesService {
     if (!rowsDeleted) {
       throw new NotFoundException('Service not found');
     }
+  }
+
+  async uploadImage(id: number, fileName: string): Promise<Image> {
+    const service = await this.servicesRepository.findById(id);
+
+    if (!service) {
+      throw new NotFoundException('Service not found');
+    }
+
+    const image = await this.servicesRepository.insertImage(service.id, {
+      path: fileName,
+    });
+
+    return image;
   }
 }

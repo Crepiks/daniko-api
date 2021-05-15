@@ -1,6 +1,4 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import path from 'path';
-import fs from 'fs-extra';
 import { WorkersRepository } from '../data/repositories/workers.repository';
 import { CreateWorkerDto } from './dto/create-worker.dto';
 import { UpdateWorkerDto } from './dto/update-worker.dto';

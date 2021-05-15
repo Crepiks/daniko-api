@@ -6,10 +6,9 @@ import {
   Patch,
   Param,
   Delete,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
-import { ServicesService } from './services.service';
-import { CreateServiceDto } from './dto/create-service.dto';
-import { UpdateServiceDto } from './dto/update-service.dto';
 import {
   ApiCreatedResponse,
   ApiNotFoundResponse,
@@ -17,6 +16,13 @@ import {
   ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import path from 'path';
+import { v4 as uuidv4 } from 'uuid';
+import { ServicesService } from './services.service';
+import { CreateServiceDto } from './dto/create-service.dto';
+import { UpdateServiceDto } from './dto/update-service.dto';
 
 @ApiTags('services')
 @Controller('services')
@@ -68,5 +74,28 @@ export class ServicesController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.servicesService.remove(+id);
+  }
+
+  @UseInterceptors(
+    FileInterceptor('image', {
+      storage: diskStorage({
+        destination: './uploads',
+        filename: (req, file, cb) => {
+          const fileName = uuidv4();
+          const extenstion = path.parse(file.originalname).ext;
+
+          cb(null, `${fileName}${extenstion}`);
+        },
+      }),
+    }),
+  )
+  @Post(':id/images')
+  async uploadImage(
+    @Param('id') id: string,
+    @UploadedFile() image: Express.Multer.File,
+  ) {
+    return {
+      image: await this.servicesService.uploadImage(+id, image.filename),
+    };
   }
 }

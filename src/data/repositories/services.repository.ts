@@ -3,6 +3,8 @@ import { InsertServiceDto } from '../dto/insert-service.dto';
 import { UpdateServiceDto } from '../dto/update-service.dto';
 import { Service } from 'src/entities/service.entity';
 import ServiceModel from '../models/service.model';
+import { InsertImageDto } from '../dto/insert-image.dto';
+import { Image } from 'src/entities/image.entity';
 
 @Injectable()
 export class ServicesRepository {
@@ -37,6 +39,10 @@ export class ServicesRepository {
     return ServiceModel.relatedQuery('workers').for(serviceId).unrelate();
   }
 
+  findById(id: number): Promise<Service> {
+    return ServiceModel.query().findById(id);
+  }
+
   detailById(id: number): Promise<Service> {
     return ServiceModel.query().findById(id).withGraphFetched({
       images: true,
@@ -54,5 +60,19 @@ export class ServicesRepository {
 
   deleteById(id: number): Promise<number> {
     return ServiceModel.query().deleteById(id);
+  }
+
+  async insertImage(id: number, payload: InsertImageDto): Promise<Image> {
+    const service = await ServiceModel.query().findById(id);
+    if (!service) return;
+
+    return service.$relatedQuery('images').insertAndFetch(payload);
+  }
+
+  async deleteImageById(serviceId: number, imageId: number): Promise<number> {
+    const service = await ServiceModel.query().findById(serviceId);
+    if (!service) return;
+
+    return service.$relatedQuery('images').deleteById(imageId);
   }
 }
