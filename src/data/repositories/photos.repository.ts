@@ -14,6 +14,10 @@ export class PhotosRepository {
     return PhotoModel.query().insertGraph({ image: { path } });
   }
 
+  findById(id: number): Promise<Photo> {
+    return PhotoModel.query().findById(id).withGraphFetched('image');
+  }
+
   deleteById(id: number): Promise<number> {
     return PhotoModel.query().deleteById(id);
   }
