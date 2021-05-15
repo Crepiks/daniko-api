@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AdminsRepository } from './admins.repository';
-import { PhotosRepository } from './photo.repository';
+import { PhotosRepository } from './photos.repository';
 import { ServicesRepository } from './services.repository';
 import { WorkersRepository } from './workers.repository';
 
