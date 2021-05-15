@@ -10,6 +10,8 @@ import {
   UploadedFile,
 } from '@nestjs/common';
 import {
+  ApiBody,
+  ApiConsumes,
   ApiCreatedResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -23,6 +25,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { WorkersService } from './workers.service';
 import { CreateWorkerDto } from './dto/create-worker.dto';
 import { UpdateWorkerDto } from './dto/update-worker.dto';
+import { ImageUploadDto } from './dto/image-upload.dto';
 
 @ApiTags('workers')
 @Controller('workers')
@@ -76,6 +79,11 @@ export class WorkersController {
     return this.workersService.remove(+id);
   }
 
+  @ApiCreatedResponse({ description: 'Image has been uploaded' })
+  @ApiNotFoundResponse({ description: 'Worker not found' })
+  @ApiConsumes('multipart/form-data')
+  @ApiParam({ name: 'id', description: 'Worker identifier', type: Number })
+  @ApiBody({ description: 'Image of the worker', type: ImageUploadDto })
   @Post(':id/image')
   @UseInterceptors(
     FileInterceptor('image', {
