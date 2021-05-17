@@ -6,44 +6,26 @@ import AdminModel from '../models/admin.model';
 
 @Injectable()
 export class AdminsRepository {
-  async findAll(): Promise<Admin[]> {
-    const admins = await AdminModel.query();
-    return admins;
+  findAll(): Promise<Admin[]> {
+    return AdminModel.query();
   }
 
-  async insertAndFetch(payload: CreateAdminDto): Promise<Admin> {
-    const admin = await AdminModel.query().insertAndFetch(payload);
-    return admin;
+  insertAndFetch(payload: CreateAdminDto): Promise<Admin> {
+    return AdminModel.query().insertAndFetch(payload);
   }
 
-  async findById(id: number): Promise<Admin> {
-    const admin = await AdminModel.query().findById(id);
-
-    if (!admin) {
-      throw new NotFoundException('Admin not found');
-    }
-
-    return admin;
+  findById(id: number): Promise<Admin> {
+    return AdminModel.query().findById(id);
   }
 
   async updateByIdAndFetch(
     id: number,
     payload: UpdateAdminDto,
   ): Promise<Admin> {
-    const admin = await AdminModel.query().patchAndFetchById(id, payload);
-
-    if (!admin) {
-      throw new NotFoundException('Admin not found');
-    }
-
-    return admin;
+    return AdminModel.query().patchAndFetchById(id, payload);
   }
 
-  async deleteById(id: number) {
-    const rowsDeleted = await AdminModel.query().deleteById(id);
-
-    if (!rowsDeleted) {
-      throw new NotFoundException('Admin not found');
-    }
+  deleteById(id: number): Promise<number> {
+    return AdminModel.query().deleteById(id);
   }
 }

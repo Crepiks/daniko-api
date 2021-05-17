@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { AdminsRepository } from '../data/repositories/admins.repository';
 import { CreateAdminDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
@@ -16,15 +16,28 @@ export class AdminsService {
     return this.adminsRepository.insertAndFetch(payload);
   }
 
-  findOne(id: number) {
-    return this.adminsRepository.findById(id);
+  async findOne(id: number): Promise<Admin> {
+    const admin = await this.adminsRepository.findById(id);
+    if (!admin) {
+      throw new NotFoundException('Admin not found');
+    }
+
+    return admin;
   }
 
-  update(id: number, payload: UpdateAdminDto) {
-    return this.adminsRepository.updateByIdAndFetch(id, payload);
+  async update(id: number, payload: UpdateAdminDto): Promise<Admin> {
+    const admin = await this.adminsRepository.updateByIdAndFetch(id, payload);
+    if (!admin) {
+      throw new NotFoundException('Admin not found');
+    }
+
+    return admin;
   }
 
-  remove(id: number) {
-    return this.adminsRepository.deleteById(id);
+  async remove(id: number): Promise<void> {
+    const rowsDeleted = await this.adminsRepository.deleteById(id);
+    if (!rowsDeleted) {
+      throw new NotFoundException('Admin not found');
+    }
   }
 }
