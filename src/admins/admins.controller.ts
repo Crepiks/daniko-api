@@ -17,6 +17,8 @@ import {
   ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
+import { AuthService } from 'src/auth/auth.service';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { AdminsService } from './admins.service';
 import { CreateAdminDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
@@ -24,19 +26,25 @@ import { UpdateAdminDto } from './dto/update-admin.dto';
 @ApiTags('admins')
 @Controller('admins')
 export class AdminsController {
-  constructor(private readonly adminsService: AdminsService) {}
+  constructor(
+    private readonly adminsService: AdminsService,
+    private readonly authService: AuthService,
+  ) {}
 
   @UseGuards(AuthGuard('local'))
   @Post('login')
   login(@Request() req) {
-    return req.user;
+    return {
+      token: this.authService.generateToken(req.user),
+    };
   }
 
+  @UseGuards(JwtAuthGuard)
   @ApiOkResponse({ description: 'List of admins has been retrieved.' })
   @Get()
   async findAll() {
     return {
-      admins: this.adminsService.findAll(),
+      admins: await this.adminsService.findAll(),
     };
   }
 
