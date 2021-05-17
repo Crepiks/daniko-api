@@ -6,13 +6,15 @@ import {
   Patch,
   Param,
   Delete,
+  Request,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import {
   ApiCreatedResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiParam,
-  ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
 import { AdminsService } from './admins.service';
@@ -23,6 +25,12 @@ import { UpdateAdminDto } from './dto/update-admin.dto';
 @Controller('admins')
 export class AdminsController {
   constructor(private readonly adminsService: AdminsService) {}
+
+  @UseGuards(AuthGuard('local'))
+  @Post('login')
+  login(@Request() req) {
+    return req.user;
+  }
 
   @ApiOkResponse({ description: 'List of admins has been retrieved.' })
   @Get()

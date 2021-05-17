@@ -18,6 +18,10 @@ export class AdminsRepository {
     return AdminModel.query().findById(id);
   }
 
+  findByEmail(email: string): Promise<Admin> {
+    return AdminModel.query().findOne({ email });
+  }
+
   async updateByIdAndFetch(
     id: number,
     payload: UpdateAdminDto,
