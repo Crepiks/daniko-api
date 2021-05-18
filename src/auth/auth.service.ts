@@ -19,7 +19,7 @@ export class AuthService {
     return null;
   }
 
-  generateToken(admin: Admin): string {
+  generateAdminToken(admin: Admin): string {
     const payload = { id: admin.id, email: admin.email };
     return this.jwtService.sign(payload);
   }

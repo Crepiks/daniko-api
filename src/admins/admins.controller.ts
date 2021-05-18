@@ -21,22 +21,17 @@ import { AuthService } from 'src/auth/auth.service';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { AdminsService } from './admins.service';
 import { CreateAdminDto } from './dto/create-admin.dto';
+import { LoginAdminDto } from './dto/login-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
 
 @ApiTags('admins')
 @Controller('admins')
 export class AdminsController {
-  constructor(
-    private readonly adminsService: AdminsService,
-    private readonly authService: AuthService,
-  ) {}
+  constructor(private readonly adminsService: AdminsService) {}
 
-  @UseGuards(AuthGuard('local'))
   @Post('login')
-  login(@Request() req) {
-    return {
-      token: this.authService.generateToken(req.user),
-    };
+  login(@Body() loginAdminDto: LoginAdminDto) {
+    return this.adminsService.login(loginAdminDto);
   }
 
   @UseGuards(JwtAuthGuard)
