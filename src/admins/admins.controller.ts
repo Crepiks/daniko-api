@@ -43,6 +43,7 @@ export class AdminsController {
     };
   }
 
+  @UseGuards(JwtAuthGuard)
   @ApiCreatedResponse({ description: 'Admin has been created.' })
   @Post()
   async create(@Body() payload: CreateAdminDto) {
@@ -51,6 +52,7 @@ export class AdminsController {
     };
   }
 
+  @UseGuards(JwtAuthGuard)
   @ApiOkResponse({ description: 'Admin has been retrieved.' })
   @ApiNotFoundResponse({ description: 'Admin not found.' })
   @ApiParam({ name: 'adminId', description: 'Admin identifier', type: Number })
@@ -61,6 +63,7 @@ export class AdminsController {
     };
   }
 
+  @UseGuards(JwtAuthGuard)
   @ApiOkResponse({ description: 'Admin has been updated.' })
   @ApiNotFoundResponse({ description: 'Admin not found.' })
   @ApiParam({ name: 'adminId', description: 'Admin identifier', type: Number })
@@ -74,6 +77,7 @@ export class AdminsController {
     };
   }
 
+  @UseGuards(JwtAuthGuard)
   @ApiOkResponse({ description: 'Admin has been deleted.' })
   @ApiNotFoundResponse({ description: 'Admin not found.' })
   @ApiParam({ name: 'adminId', description: 'Admin identifier', type: Number })

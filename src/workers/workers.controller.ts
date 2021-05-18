@@ -8,6 +8,7 @@ import {
   Delete,
   UseInterceptors,
   UploadedFile,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiBody,
@@ -26,6 +27,7 @@ import { WorkersService } from './workers.service';
 import { CreateWorkerDto } from './dto/create-worker.dto';
 import { UpdateWorkerDto } from './dto/update-worker.dto';
 import { ImageUploadDto } from './dto/image-upload.dto';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @ApiTags('workers')
 @Controller('workers')
@@ -40,6 +42,7 @@ export class WorkersController {
     };
   }
 
+  @UseGuards(JwtAuthGuard)
   @ApiCreatedResponse({ description: 'Worker has been created.' })
   @Post()
   async create(@Body() createWorkerDto: CreateWorkerDto) {
@@ -62,6 +65,7 @@ export class WorkersController {
     };
   }
 
+  @UseGuards(JwtAuthGuard)
   @ApiOkResponse({ description: 'Worker has been updated.' })
   @ApiNotFoundResponse({ description: 'Worker not found.' })
   @ApiParam({
@@ -79,6 +83,7 @@ export class WorkersController {
     };
   }
 
+  @UseGuards(JwtAuthGuard)
   @ApiOkResponse({ description: 'Worker has been deleted.' })
   @ApiNotFoundResponse({ description: 'Worker not found.' })
   @ApiParam({
@@ -91,6 +96,7 @@ export class WorkersController {
     return this.workersService.remove(+workerId);
   }
 
+  @UseGuards(JwtAuthGuard)
   @ApiCreatedResponse({ description: 'Image has been uploaded' })
   @ApiNotFoundResponse({ description: 'Worker not found' })
   @ApiConsumes('multipart/form-data')

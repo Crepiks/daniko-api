@@ -8,6 +8,7 @@ import {
   Delete,
   UseInterceptors,
   UploadedFile,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiBody,
@@ -26,6 +27,7 @@ import { ServicesService } from './services.service';
 import { CreateServiceDto } from './dto/create-service.dto';
 import { UpdateServiceDto } from './dto/update-service.dto';
 import { ImageUploadDto } from './dto/image-upload.dto';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @ApiTags('services')
 @Controller('services')
@@ -40,6 +42,7 @@ export class ServicesController {
     };
   }
 
+  @UseGuards(JwtAuthGuard)
   @ApiCreatedResponse({ description: 'Service has been created.' })
   @Post()
   async create(@Body() createServiceDto: CreateServiceDto) {
@@ -62,6 +65,7 @@ export class ServicesController {
     };
   }
 
+  @UseGuards(JwtAuthGuard)
   @ApiOkResponse({ description: 'Service has been updated.' })
   @ApiNotFoundResponse({ description: 'Service not found.' })
   @ApiParam({
@@ -79,6 +83,7 @@ export class ServicesController {
     };
   }
 
+  @UseGuards(JwtAuthGuard)
   @ApiOkResponse({ description: 'Service has been deleted.' })
   @ApiNotFoundResponse({ description: 'Service not found.' })
   @ApiParam({
@@ -91,6 +96,7 @@ export class ServicesController {
     return this.servicesService.remove(+serviceId);
   }
 
+  @UseGuards(JwtAuthGuard)
   @ApiCreatedResponse({ description: 'Image has been uploaded.' })
   @ApiNotFoundResponse({ description: 'Service not found.' })
   @ApiParam({
@@ -126,6 +132,7 @@ export class ServicesController {
     };
   }
 
+  @UseGuards(JwtAuthGuard)
   @ApiOkResponse({ description: 'Image has been deleted.' })
   @ApiNotFoundResponse({ description: 'Service or service not found.' })
   @ApiParam({

@@ -6,6 +6,7 @@ import {
   Delete,
   UseInterceptors,
   UploadedFile,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiBody,
@@ -22,6 +23,7 @@ import { diskStorage } from 'multer';
 import path from 'path';
 import { PhotosService } from './photos.service';
 import { UploadPhotoDto } from './dto/upload-photo.dto';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @ApiTags('photos')
 @Controller('photos')
@@ -36,6 +38,7 @@ export class PhotosController {
     };
   }
 
+  @UseGuards(JwtAuthGuard)
   @ApiCreatedResponse({ description: 'Photo has been uploaded.' })
   @ApiConsumes('multipart/form-data')
   @ApiBody({ description: 'Photo', type: UploadPhotoDto })
@@ -59,6 +62,7 @@ export class PhotosController {
     };
   }
 
+  @UseGuards(JwtAuthGuard)
   @ApiOkResponse({ description: 'Photo has been deleted.' })
   @ApiNotFoundResponse({ description: 'Photo not found' })
   @ApiParam({ name: 'photoId', description: 'Photo identifier', type: Number })
