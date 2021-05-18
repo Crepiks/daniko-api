@@ -53,32 +53,32 @@ export class AdminsController {
 
   @ApiOkResponse({ description: 'Admin has been retrieved.' })
   @ApiNotFoundResponse({ description: 'Admin not found.' })
-  @ApiParam({ name: 'id', description: 'Admin identifier', type: Number })
-  @Get(':id')
-  async findOne(@Param('id') id: string) {
+  @ApiParam({ name: 'adminId', description: 'Admin identifier', type: Number })
+  @Get(':adminId')
+  async findOne(@Param('adminId') adminId: string) {
     return {
-      admin: await this.adminsService.findOne(+id),
+      admin: await this.adminsService.findOne(+adminId),
     };
   }
 
   @ApiOkResponse({ description: 'Admin has been updated.' })
   @ApiNotFoundResponse({ description: 'Admin not found.' })
-  @ApiParam({ name: 'id', description: 'Admin identifier', type: Number })
-  @Patch(':id')
+  @ApiParam({ name: 'adminId', description: 'Admin identifier', type: Number })
+  @Patch(':adminId')
   async update(
-    @Param('id') id: string,
+    @Param('adminId') adminId: string,
     @Body() updateAdminDto: UpdateAdminDto,
   ) {
     return {
-      admin: await this.adminsService.update(+id, updateAdminDto),
+      admin: await this.adminsService.update(+adminId, updateAdminDto),
     };
   }
 
   @ApiOkResponse({ description: 'Admin has been deleted.' })
   @ApiNotFoundResponse({ description: 'Admin not found.' })
-  @ApiParam({ name: 'id', description: 'Admin identifier', type: Number })
-  @Delete(':id')
-  async remove(@Param('id') id: string) {
-    await this.adminsService.remove(+id);
+  @ApiParam({ name: 'adminId', description: 'Admin identifier', type: Number })
+  @Delete(':adminId')
+  async remove(@Param('adminId') adminId: string) {
+    await this.adminsService.remove(+adminId);
   }
 }

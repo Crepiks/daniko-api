@@ -50,41 +50,57 @@ export class WorkersController {
 
   @ApiOkResponse({ description: 'Worker has been retrieved.' })
   @ApiNotFoundResponse({ description: 'Worker not found.' })
-  @ApiParam({ name: 'id', description: 'Worker identifier', type: Number })
-  @Get(':id')
-  async findOne(@Param('id') id: string) {
+  @ApiParam({
+    name: 'workerId',
+    description: 'Worker identifier',
+    type: Number,
+  })
+  @Get(':workerId')
+  async findOne(@Param('workerId') workerId: string) {
     return {
-      worker: await this.workersService.findOne(+id),
+      worker: await this.workersService.findOne(+workerId),
     };
   }
 
   @ApiOkResponse({ description: 'Worker has been updated.' })
   @ApiNotFoundResponse({ description: 'Worker not found.' })
-  @ApiParam({ name: 'id', description: 'Worker identifier', type: Number })
-  @Patch(':id')
+  @ApiParam({
+    name: 'workerId',
+    description: 'Worker identifier',
+    type: Number,
+  })
+  @Patch(':workerId')
   async update(
-    @Param('id') id: string,
+    @Param('workerId') workerId: string,
     @Body() updateWorkerDto: UpdateWorkerDto,
   ) {
     return {
-      worker: await this.workersService.update(+id, updateWorkerDto),
+      worker: await this.workersService.update(+workerId, updateWorkerDto),
     };
   }
 
   @ApiOkResponse({ description: 'Worker has been deleted.' })
   @ApiNotFoundResponse({ description: 'Worker not found.' })
-  @ApiParam({ name: 'id', description: 'Worker identifier', type: Number })
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.workersService.remove(+id);
+  @ApiParam({
+    name: 'workerId',
+    description: 'Worker identifier',
+    type: Number,
+  })
+  @Delete(':workerId')
+  remove(@Param('workerId') workerId: string) {
+    return this.workersService.remove(+workerId);
   }
 
   @ApiCreatedResponse({ description: 'Image has been uploaded' })
   @ApiNotFoundResponse({ description: 'Worker not found' })
   @ApiConsumes('multipart/form-data')
-  @ApiParam({ name: 'id', description: 'Worker identifier', type: Number })
+  @ApiParam({
+    name: 'workerId',
+    description: 'Worker identifier',
+    type: Number,
+  })
   @ApiBody({ description: 'Image of the worker', type: ImageUploadDto })
-  @Post(':id/image')
+  @Post(':workerId/image')
   @UseInterceptors(
     FileInterceptor('image', {
       storage: diskStorage({
@@ -99,11 +115,11 @@ export class WorkersController {
     }),
   )
   async uploadImage(
-    @Param('id') id: string,
+    @Param('workerId') workerId: string,
     @UploadedFile() image: Express.Multer.File,
   ) {
     return {
-      worker: await this.workersService.setImage(+id, image.filename),
+      worker: await this.workersService.setImage(+workerId, image.filename),
     };
   }
 }

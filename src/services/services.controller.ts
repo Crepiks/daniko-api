@@ -50,38 +50,54 @@ export class ServicesController {
 
   @ApiOkResponse({ description: 'Service has been retrieved.' })
   @ApiNotFoundResponse({ description: 'Service not found.' })
-  @ApiParam({ name: 'id', description: 'Service identifier', type: Number })
-  @Get(':id')
-  async findOne(@Param('id') id: string) {
+  @ApiParam({
+    name: 'serviceId',
+    description: 'Service identifier',
+    type: Number,
+  })
+  @Get(':serviceId')
+  async findOne(@Param('serviceId') serviceId: string) {
     return {
-      service: await this.servicesService.findOne(+id),
+      service: await this.servicesService.findOne(+serviceId),
     };
   }
 
   @ApiOkResponse({ description: 'Service has been updated.' })
   @ApiNotFoundResponse({ description: 'Service not found.' })
-  @ApiParam({ name: 'id', description: 'Service identifier', type: Number })
-  @Patch(':id')
+  @ApiParam({
+    name: 'serviceId',
+    description: 'Service identifier',
+    type: Number,
+  })
+  @Patch(':serviceId')
   async update(
-    @Param('id') id: string,
+    @Param('serviceId') serviceId: string,
     @Body() updateServiceDto: UpdateServiceDto,
   ) {
     return {
-      service: await this.servicesService.update(+id, updateServiceDto),
+      service: await this.servicesService.update(+serviceId, updateServiceDto),
     };
   }
 
   @ApiOkResponse({ description: 'Service has been deleted.' })
   @ApiNotFoundResponse({ description: 'Service not found.' })
-  @ApiParam({ name: 'id', description: 'Service identifier', type: Number })
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.servicesService.remove(+id);
+  @ApiParam({
+    name: 'serviceId',
+    description: 'Service identifier',
+    type: Number,
+  })
+  @Delete(':serviceId')
+  remove(@Param('serviceId') serviceId: string) {
+    return this.servicesService.remove(+serviceId);
   }
 
   @ApiCreatedResponse({ description: 'Image has been uploaded.' })
   @ApiNotFoundResponse({ description: 'Service not found.' })
-  @ApiParam({ name: 'id', description: 'Service identifier', type: Number })
+  @ApiParam({
+    name: 'serviceId',
+    description: 'Service identifier',
+    type: Number,
+  })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     description: 'Image of the service',
@@ -100,23 +116,27 @@ export class ServicesController {
       }),
     }),
   )
-  @Post(':id/images')
+  @Post(':serviceId/images')
   async uploadImage(
-    @Param('id') id: string,
+    @Param('serviceId') serviceId: string,
     @UploadedFile() image: Express.Multer.File,
   ) {
     return {
-      image: await this.servicesService.uploadImage(+id, image.filename),
+      image: await this.servicesService.uploadImage(+serviceId, image.filename),
     };
   }
 
   @ApiOkResponse({ description: 'Image has been deleted.' })
   @ApiNotFoundResponse({ description: 'Service or service not found.' })
-  @ApiParam({ name: 'id', description: 'Service identifier', type: Number })
+  @ApiParam({
+    name: 'serviceId',
+    description: 'Service identifier',
+    type: Number,
+  })
   @ApiParam({ name: 'imageId', description: 'Image identifier', type: Number })
-  @Delete(':id/images/:imageId')
+  @Delete(':serviceId/images/:imageId')
   deleteImage(
-    @Param('id') serviceId: string,
+    @Param('serviceId') serviceId: string,
     @Param('imageId') imageId: string,
   ) {
     return this.servicesService.deleteImage(+serviceId, +imageId);

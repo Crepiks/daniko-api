@@ -38,7 +38,6 @@ export class PhotosController {
 
   @ApiCreatedResponse({ description: 'Photo has been uploaded.' })
   @ApiConsumes('multipart/form-data')
-  @ApiParam({ name: 'id', description: 'Photo identifier', type: Number })
   @ApiBody({ description: 'Photo', type: UploadPhotoDto })
   @UseInterceptors(
     FileInterceptor('image', {
@@ -62,8 +61,9 @@ export class PhotosController {
 
   @ApiOkResponse({ description: 'Photo has been deleted.' })
   @ApiNotFoundResponse({ description: 'Photo not found' })
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.photosService.remove(+id);
+  @ApiParam({ name: 'photoId', description: 'Photo identifier', type: Number })
+  @Delete(':photoId')
+  remove(@Param('photoId') photoId: string) {
+    return this.photosService.remove(+photoId);
   }
 }
