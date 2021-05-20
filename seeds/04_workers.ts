@@ -12,6 +12,7 @@ export async function seed(knex: Knex): Promise<void> {
       description:
         'Занимается полным терапевтическим лечением. Заведует дневным стационаром.',
       scheduleId: 1,
+      imageId: 1,
     },
     {
       id: 2,
@@ -20,6 +21,7 @@ export async function seed(knex: Knex): Promise<void> {
       branch: 'Хирург',
       description: 'Проводит сосудистые операции.',
       scheduleId: 2,
+      imageId: 2,
     },
     {
       id: 3,
@@ -28,6 +30,7 @@ export async function seed(knex: Knex): Promise<void> {
       branch: 'Невропатолог',
       description: 'Консультирует и занимается медикаментозным лечением.',
       scheduleId: 3,
+      imageId: 3,
     },
   ]);
 }
