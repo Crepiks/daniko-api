@@ -1,9 +1,5 @@
-import {
-  Controller,
-  Get,
-  Body,
-  Patch,
-} from '@nestjs/common';
+import { Controller, Get, Body, Patch } from '@nestjs/common';
+import { ApiOkResponse } from '@nestjs/swagger';
 import { ContactsService } from './contacts.service';
 import { UpdateContactDto } from './dto/update-contact.dto';
 
@@ -11,13 +7,19 @@ import { UpdateContactDto } from './dto/update-contact.dto';
 export class ContactsController {
   constructor(private readonly contactsService: ContactsService) {}
 
+  @ApiOkResponse({ description: 'Contacts has been retrieved.' })
   @Get()
-  findAll() {
-    return this.contactsService.findAll();
+  async findAll() {
+    return {
+      contacts: await this.contactsService.findAll(),
+    };
   }
 
+  @ApiOkResponse({ description: 'Contacts has been updated.' })
   @Patch()
-  update(@Body() updateContactDto: UpdateContactDto) {
-    return this.contactsService.update(updateContactDto);
+  async update(@Body() updateContactDto: UpdateContactDto) {
+    return {
+      contacts: await this.contactsService.update(updateContactDto),
+    };
   }
 }

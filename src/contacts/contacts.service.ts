@@ -11,7 +11,7 @@ export class ContactsService {
     return this.contactsRepository.findAll();
   }
 
-  update(payload: UpdateContactDto) {
-    return `This action updates a contact`;
+  update(payload: UpdateContactDto): Promise<Contacts> {
+    return this.contactsRepository.update(payload);
   }
 }
