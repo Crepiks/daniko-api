@@ -10,6 +10,7 @@ import { RepositoriesModule } from './data/repositories/repositories.module';
 import { PhotosModule } from './photos/photos.module';
 import { UploadsModule } from './uploads/uploads.module';
 import { AuthModule } from './auth/auth.module';
+import { ContactsModule } from './contacts/contacts.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { AuthModule } from './auth/auth.module';
     PhotosModule,
     UploadsModule,
     AuthModule,
+    ContactsModule,
   ],
 })
 export class AppModule {}

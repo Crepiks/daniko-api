@@ -5,7 +5,7 @@ import ContactModel from '../models/contact.model';
 const CONTACT_ID = 1;
 
 @Injectable()
-export class ContactsRepositories {
+export class ContactsRepository {
   findAll(): Promise<Contacts> {
     return ContactModel.query().findById(CONTACT_ID);
   }
