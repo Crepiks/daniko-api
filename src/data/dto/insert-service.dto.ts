@@ -11,5 +11,6 @@ class InsertScheduleDto {
 export class InsertServiceDto {
   title: string;
   description: string;
+  price: number;
   schedule: InsertScheduleDto;
 }

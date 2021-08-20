@@ -31,6 +31,9 @@ export class CreateServiceDto {
   description: string;
 
   @ApiProperty()
+  price: number;
+
+  @ApiProperty()
   schedule: CreateScheduleDto;
 
   @ApiProperty({ type: [Number] })

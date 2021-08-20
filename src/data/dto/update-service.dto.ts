@@ -11,5 +11,6 @@ class UpdateScheduleDto {
 export class UpdateServiceDto {
   title: string;
   description: string;
+  price: number;
   schedule: UpdateScheduleDto;
 }

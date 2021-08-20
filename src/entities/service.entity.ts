@@ -6,6 +6,7 @@ export class Service {
   title: string;
   description: string;
   scheduleId: number;
+  price: number;
   createdAt: string;
   schedule: Schedule;
   images: Image[];

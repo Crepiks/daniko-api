@@ -10,6 +10,7 @@ class ServiceModel extends Model {
   title: string;
   description: string;
   scheduleId: number;
+  price: number;
   createdAt: string;
   images: ImageModel[];
   schedule: ScheduleModel;
