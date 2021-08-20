@@ -5,6 +5,10 @@
   "author": "Sayazhan Onglassyn",
   "private": true,
   "license": "UNLICENSED",
+  "engines": {
+    "node": "^14.17.5",
+    "npm": "^7.20.6"
+  },
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
